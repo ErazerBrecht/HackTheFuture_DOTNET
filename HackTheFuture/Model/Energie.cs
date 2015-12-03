@@ -10,7 +10,7 @@ namespace HackTheFuture.Model
     {
         public Energie()
         {
-            Naam = "Arbeid";
+            Naam = "Energie";
 
             MinStrength = 0;
             MaxStrength = 2;

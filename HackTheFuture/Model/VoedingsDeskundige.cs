@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HackTheFuture.Model
 {
-    class VoedingsDeskundige
+    class VoedingsDeskundige : Arbeid
     {
         public VoedingsDeskundige()
         {
