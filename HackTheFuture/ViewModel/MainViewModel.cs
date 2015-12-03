@@ -1,4 +1,7 @@
 using GalaSoft.MvvmLight;
+using System.Collections.ObjectModel;
+using System.Data.Entity;
+using System.Linq;
 
 namespace HackTheFuture.ViewModel
 {
@@ -16,19 +19,22 @@ namespace HackTheFuture.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+
+        private int i = 0;
+        private int width = 30;
+        public PeopleHackTheFutureEntities Context { get; set; }
+        public ObservableCollection<People> Lijst { get; set; }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
         public MainViewModel()
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            using (Context = new PeopleHackTheFutureEntities())
+            { 
+                var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
+                Lijst = new ObservableCollection<People>(data);
+            }
         }
     }
 }
