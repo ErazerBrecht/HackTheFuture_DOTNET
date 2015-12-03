@@ -89,6 +89,8 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>PeopleModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Ingenieur.cs" />
+    <Compile Include="Model\Kaartenmaker.cs" />
     <Compile Include="NewPeople.cs">
       <DependentUpon>PeopleModel.tt</DependentUpon>
     </Compile>
@@ -115,6 +117,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PeopleModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\Arbeid.cs" />
     <Compile Include="ViewModel\IWorkSpace.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\OldPersonsViewModel.cs" />

@@ -11,7 +11,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row="0" x:Name="peopleDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Lijst}" Margin="10" RowDetailsVisibilityMode="VisibleWhenSelected">
+        <DataGrid Grid.Row="1" x:Name="peopleDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding Lijst}" Margin="10" RowDetailsVisibilityMode="VisibleWhenSelected">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="idColumn" Binding="{Binding Id}" Header="Id" Width="SizeToHeader"/>
                 <DataGridTextColumn x:Name="firstNameColumn" Binding="{Binding FirstName}" Header="First Name" Width="SizeToHeader"/>
@@ -34,9 +34,10 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
             <Button Command="{Binding PreviousButton}" Content="Previous" Width="100"></Button>
             <Button Command="{Binding NextButton}" Content="Next" Width="100" Margin="50,0,0,0"></Button>
+            <Button Command="{Binding SearchJobButton}" Content="Search Job" Width="100" Margin="50,0,0,0"></Button>
         </StackPanel>
     </Grid>
 </UserControl>
