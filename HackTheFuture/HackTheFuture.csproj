@@ -89,6 +89,9 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>PeopleModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="NewPeople.cs">
+      <DependentUpon>PeopleModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="People.cs">
       <DependentUpon>PeopleModel.tt</DependentUpon>
     </Compile>
@@ -112,9 +115,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PeopleModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\IWorkSpace.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\OldPersonsViewModel.cs" />
     <Compile Include="ViewModel\PageableCollection.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Views\OldPersonsView.xaml.cs">
+      <DependentUpon>OldPersonsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -127,6 +135,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\OldPersonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
