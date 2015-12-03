@@ -64,7 +64,8 @@ namespace HackTheFuture.ViewModel
             );
 
             Context = new PeopleHackTheFutureEntities();
-            var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
+            //var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
+            var data = Context.People.OrderBy(p => p.Id).Where(p => p.Agility == 3);
             Lijst = new ObservableCollection<People>(data);
         }
 

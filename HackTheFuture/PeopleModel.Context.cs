@@ -27,5 +27,6 @@ namespace HackTheFuture
     
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<People> People { get; set; }
+        public virtual DbSet<NewPeople> NewPeople { get; set; }
     }
 }

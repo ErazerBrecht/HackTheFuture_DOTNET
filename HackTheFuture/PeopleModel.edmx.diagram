@@ -7,6 +7,8 @@
       <Diagram DiagramId="fd748d534a0b4cdd91e7a45847312919" Name="Diagram1">
         <EntityTypeShape EntityType="PeopleHackTheFutureModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="PeopleHackTheFutureModel.People" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PeopleHackTheFutureModel.NewPeople" Width="1.5" PointX="5.375" PointY="0.75" />
+        <AssociationConnector Association="PeopleHackTheFutureModel.FK__NewPeople__Partn__36B12243" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
