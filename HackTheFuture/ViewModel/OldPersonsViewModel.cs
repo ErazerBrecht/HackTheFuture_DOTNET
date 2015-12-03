@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using HackTheFuture.Model;
 
@@ -14,7 +15,9 @@ namespace HackTheFuture.ViewModel
     class OldPersonsViewModel : ViewModelBase, IWorkSpace
     {
         private int i = 0;
-        private int width = 5000;
+        private int widthShow = 25;
+        private int widthCalc = 200;
+        private Task _asyncTask;
 
         public string Header { get; set; }
 
@@ -38,6 +41,7 @@ namespace HackTheFuture.ViewModel
         }
         #endregion
 
+        private List<People> _people = new List<People>();
         private List<Arbeid> _arbeiden = new List<Arbeid>();
 
         public ICommand NextButton { get; set; }
@@ -66,18 +70,19 @@ namespace HackTheFuture.ViewModel
                 () => true
                 );
 
+            _asyncTask = new Task(SearchJobAsync);
             _arbeiden.Add(new Ingenieur());
             _arbeiden.Add(new Kaartenmaker());
 
             Context = new PeopleHackTheFutureEntities();
-            var data = Context.People.OrderBy(p => p.Id).Skip(i*width).Take(width);
+            var data = Context.People.OrderBy(p => p.Id).Skip(i*widthShow).Take(widthShow);
             Lijst = new ObservableCollection<People>(data);
         }
 
         public void Next()
         {
             i++;
-            var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
+            var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
             Lijst = new ObservableCollection<People>(data);
         }
 
@@ -86,24 +91,41 @@ namespace HackTheFuture.ViewModel
             if (i > 0)
             {
                 i--;
-                var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
+                var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
                 Lijst = new ObservableCollection<People>(data);
             }
         }
 
         public void SearchJob()
         {
-            foreach (var p in Lijst)
+            if (_asyncTask.Status != TaskStatus.Running)
             {
-                foreach (var a in _arbeiden)
+                _asyncTask.Start();
+            }
+        }
+
+        async void SearchJobAsync()
+        {
+            //@ The moment we hardcoded the lenghth of the DB to 1 000 000
+            //TODO FIX THIS!!!
+            //1 000 000 / 200 = 5000
+
+            for (int l = 0; l < 5000; l++)
+            {
+                _people = Context.People.OrderBy(p => p.Id).Skip(l * widthCalc).Take(widthCalc).ToList();
+                foreach (var p in _people)
                 {
-                    if (a.Check(p))
+                    foreach (var a in _arbeiden)
                     {
-                        Debug.WriteLine(p.FirstName + "is een " + a.Naam);
-                        break;
+                        if (a.Check(p))
+                        {
+                            Debug.WriteLine(p.FirstName + " is een " + a.Naam);
+                            break;
+                        }
                     }
                 }
             }
         }
+
     }
 }
