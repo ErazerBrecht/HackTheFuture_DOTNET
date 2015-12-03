@@ -101,6 +101,7 @@
     <Compile Include="Model\NewPeopleExtension.cs" />
     <Compile Include="Model\Opvoeder.cs" />
     <Compile Include="Model\Ordehandhaver.cs" />
+    <Compile Include="Model\PeopleExtension.cs" />
     <Compile Include="Model\Politieker.cs" />
     <Compile Include="Model\Verzorger.cs" />
     <Compile Include="Model\VoedingsDeskundige.cs" />

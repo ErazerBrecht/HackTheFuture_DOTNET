@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HackTheFuture.Model;
@@ -128,6 +129,7 @@ namespace HackTheFuture.ViewModel
             for (int l = 0; l < 5000; l++)
             {
                 _people = Context.People.OrderBy(p => p.Id).Skip(l * widthCalc).Take(widthCalc).ToList();
+                _newPeoples = new List<NewPeople>();
                 foreach (var p in _people)
                 {
                     var newP = new NewPeople();
@@ -142,6 +144,18 @@ namespace HackTheFuture.ViewModel
                             break;
                         }
                     }
+                    _newPeoples.Add(newP);
+                }
+
+                //TODO Add new people to db
+                //TODO Remove old peoplpe
+
+                Context.People.RemoveRange(_people);
+                Context.NewPeople.AddRange(_newPeoples);
+                Context.SaveChanges();
+
+                foreach (var newP in _newPeoples)
+                {
 
                     //Check if person has a partner
                     //If not find one
@@ -157,34 +171,36 @@ namespace HackTheFuture.ViewModel
                                     {
                                         if (Math.Abs(m.Strength - newP.Strength) >= 1 && Math.Abs(m.Strength - newP.Strength) <= 3)
                                         {
-                                            if(Math.Abs(m.Perception - newP.Perception) >= 1 && Math.Abs(m.Perception - newP.Perception) <= 3)
+                                            if (Math.Abs(m.Perception - newP.Perception) >= 1 && Math.Abs(m.Perception - newP.Perception) <= 3)
                                             {
-                                                if(Math.Abs(m.Endurance - newP.Endurance) >= 1 && Math.Abs(m.Endurance - newP.Endurance) <= 3)
+                                                if (Math.Abs(m.Endurance - newP.Endurance) >= 1 && Math.Abs(m.Endurance - newP.Endurance) <= 3)
                                                 {
-                                                    if(Math.Abs(m.Charisma - newP.Charisma) >= 1 && Math.Abs(m.Charisma - newP.Charisma) <= 3)
+                                                    if (Math.Abs(m.Charisma - newP.Charisma) >= 1 && Math.Abs(m.Charisma - newP.Charisma) <= 3)
                                                     {
-                                                        if(Math.Abs(m.Intelligence - newP.Intelligence) >= 1 && Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
+                                                        if (Math.Abs(m.Intelligence - newP.Intelligence) >= 1 && Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
                                                         {
-                                                            if(Math.Abs(m.Agility - newP.Agility) >= 1 && Math.Abs(m.Agility - newP.Agility) <= 3)
+                                                            if (Math.Abs(m.Agility - newP.Agility) >= 1 && Math.Abs(m.Agility - newP.Agility) <= 3)
                                                             {
-                                                                if(Math.Abs(m.Luck - newP.Luck) >= 1 && Math.Abs(m.Luck - newP.Luck) <= 3)
+                                                                if (Math.Abs(m.Luck - newP.Luck) >= 1 && Math.Abs(m.Luck - newP.Luck) <= 3)
                                                                 {
                                                                     newP.Partner = m.Id;
+                                                                    Debug.WriteLine(newP.FirstName + " has a relation with " + m.FirstName);
+                                                                    break;
                                                                 }
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
-                                            
+
                                         }
                                     }
                                 }
                             }
                         }
                 }
-                //Check if person still doesn't have a partner
-                //if(p.Partner == null)
+
+                Context.SaveChanges();
             }
         }
 

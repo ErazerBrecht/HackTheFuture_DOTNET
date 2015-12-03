@@ -129,7 +129,7 @@
           <Property Name="Agility" Type="Byte" Nullable="false" />
           <Property Name="Luck" Type="Byte" Nullable="false" />
           <Property Name="Job" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Partner" Type="Guid" />
+          <Property Name="Partner" Type="Guid" Nullable="true" />
           <NavigationProperty Name="NewPeople1" Relationship="PeopleHackTheFutureModel.FK__NewPeople__Partn__36B12243" FromRole="NewPeople" ToRole="NewPeople1" />
           <NavigationProperty Name="NewPeople2" Relationship="PeopleHackTheFutureModel.FK__NewPeople__Partn__36B12243" FromRole="NewPeople1" ToRole="NewPeople" />
         </EntityType>
