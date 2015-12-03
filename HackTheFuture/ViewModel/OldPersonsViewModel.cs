@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using HackTheFuture.Model;
 
-namespace HackTheFuture.ViewModel 
+namespace HackTheFuture.ViewModel
 {
     class OldPersonsViewModel : ViewModelBase, IWorkSpace
     {
@@ -22,7 +22,7 @@ namespace HackTheFuture.ViewModel
         public string Header { get; set; }
 
         public PeopleHackTheFutureEntities Context { get; set; }
-        
+
         #region Lijst Full property
         private ObservableCollection<People> _lijst;
 
@@ -78,7 +78,7 @@ namespace HackTheFuture.ViewModel
             _arbeiden.Add(new Elektrisch_ingenieur());
             _arbeiden.Add(new Opvoeder());
             _arbeiden.Add(new Dokter());
-            _arbeiden.Add(new Verzorger()); 
+            _arbeiden.Add(new Verzorger());
             _arbeiden.Add(new Politieker());
             _arbeiden.Add(new Geoloog());
             _arbeiden.Add(new Kaartenmaker());
@@ -90,7 +90,7 @@ namespace HackTheFuture.ViewModel
 
 
             Context = new PeopleHackTheFutureEntities();
-            var data = Context.People.OrderBy(p => p.Id).Skip(i*widthShow).Take(widthShow);
+            var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
             Lijst = new ObservableCollection<People>(data);
         }
 
@@ -145,25 +145,29 @@ namespace HackTheFuture.ViewModel
 
                     //Check if person has a partner
                     //If not find one
-                    
-                    if(newP.Partner == null)
+
+                    if (newP.Partner == null)
                         foreach (var m in _people)
                         {
                             if (m.Sex != newP.Sex)
                             {
-                               var temp =  Math
-                                     m.DateOfBirth - newP.DateOfBirth;
-
+                                if (Math.Abs((m.DateOfBirth - newP.DateOfBirth).TotalDays) <= 6 * 365)
+                                {
+                                    if (m.LastName != newP.LastName)
+                                    {
+                                        if (Math.Abs(m.Strength - newP.Strength) >= 1 && Math.Abs(m.Strength - newP.Strength) <= 3)
+                                        {
+                                            //TODO: MORE OF THIS....
+                                            //Debug.WriteLine(newP.FirstName "ha")
+                                            newP.Partner = m.Id;
+                                        }
+                                    }
+                                }
                             }
                         }
-                            //BIG IF
-                        }
-                    //Check if person still doesn't have a partner
-                    //if(p.Partner == null)
-
-                    */
-
                 }
+                //Check if person still doesn't have a partner
+                //if(p.Partner == null)
             }
         }
 
