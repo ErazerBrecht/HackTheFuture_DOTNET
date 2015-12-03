@@ -42,6 +42,8 @@ namespace HackTheFuture.ViewModel
         #endregion
 
         private List<People> _people = new List<People>();
+        private List<NewPeople> _newPeoples = new List<NewPeople>();
+        private List<People> _peopleLove = new List<People>();
         private List<Arbeid> _arbeiden = new List<Arbeid>();
 
         public ICommand NextButton { get; set; }
@@ -128,14 +130,39 @@ namespace HackTheFuture.ViewModel
                 _people = Context.People.OrderBy(p => p.Id).Skip(l * widthCalc).Take(widthCalc).ToList();
                 foreach (var p in _people)
                 {
+                    var newP = new NewPeople();
+                    newP.Create(p);
+
                     foreach (var a in _arbeiden)
                     {
                         if (a.Check(p))
                         {
                             Debug.WriteLine(p.FirstName + " is een " + a.Naam);
+                            newP.Job = a.Naam;
                             break;
                         }
                     }
+
+                    //Check if person has a partner
+                    //If not find one
+                    
+                    if(newP.Partner == null)
+                        foreach (var m in _people)
+                        {
+                            if (m.Sex != newP.Sex)
+                            {
+                               var temp =  Math
+                                     m.DateOfBirth - newP.DateOfBirth;
+
+                            }
+                        }
+                            //BIG IF
+                        }
+                    //Check if person still doesn't have a partner
+                    //if(p.Partner == null)
+
+                    */
+
                 }
             }
         }
