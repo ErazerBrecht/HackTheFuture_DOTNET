@@ -157,9 +157,26 @@ namespace HackTheFuture.ViewModel
                                     {
                                         if (Math.Abs(m.Strength - newP.Strength) >= 1 && Math.Abs(m.Strength - newP.Strength) <= 3)
                                         {
-                                            //TODO: MORE OF THIS....
-                                            //Debug.WriteLine(newP.FirstName "ha")
-                                            newP.Partner = m.Id;
+                                            if(Math.Abs(m.Perception - newP.Perception) >= 1 && Math.Abs(m.Perception - newP.Perception) <= 3)
+                                            {
+                                                if(Math.Abs(m.Endurance - newP.Endurance) >= 1 && Math.Abs(m.Endurance - newP.Endurance) <= 3)
+                                                {
+                                                    if(Math.Abs(m.Charisma - newP.Charisma) >= 1 && Math.Abs(m.Charisma - newP.Charisma) <= 3)
+                                                    {
+                                                        if(Math.Abs(m.Intelligence - newP.Intelligence) >= 1 && Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
+                                                        {
+                                                            if(Math.Abs(m.Agility - newP.Agility) >= 1 && Math.Abs(m.Agility - newP.Agility) <= 3)
+                                                            {
+                                                                if(Math.Abs(m.Luck - newP.Luck) >= 1 && Math.Abs(m.Luck - newP.Luck) <= 3)
+                                                                {
+                                                                    newP.Partner = m.Id;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            
                                         }
                                     }
                                 }
