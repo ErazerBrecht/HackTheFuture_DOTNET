@@ -72,7 +72,20 @@ namespace HackTheFuture.ViewModel
 
             _asyncTask = new Task(SearchJobAsync);
             _arbeiden.Add(new Ingenieur());
+            _arbeiden.Add(new Ordehandhaver());
+            _arbeiden.Add(new Elektrisch_ingenieur());
+            _arbeiden.Add(new Opvoeder());
+            _arbeiden.Add(new Dokter());
+            _arbeiden.Add(new Verzorger()); 
+            _arbeiden.Add(new Politieker());
+            _arbeiden.Add(new Geoloog());
             _arbeiden.Add(new Kaartenmaker());
+            _arbeiden.Add(new Energie());
+            _arbeiden.Add(new Geschiedkundige());
+            _arbeiden.Add(new GeheimAgent());
+            _arbeiden.Add(new VoedingsDeskundige());
+            _arbeiden.Add(new AfvalVerwerker());
+
 
             Context = new PeopleHackTheFutureEntities();
             var data = Context.People.OrderBy(p => p.Id).Skip(i*widthShow).Take(widthShow);

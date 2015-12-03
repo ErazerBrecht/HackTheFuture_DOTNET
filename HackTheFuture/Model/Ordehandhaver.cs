@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HackTheFuture.Model
 {
-    class ordehandhaver : Arbeid
+    class Ordehandhaver : Arbeid
     {
-        public ordehandhaver()
+        public Ordehandhaver()
         {
             Naam = "ordehandhaver";
 
