@@ -58,6 +58,11 @@ namespace HackTheFuture.ViewModel
                 () => true
             );
 
+            PreviousButton = new RelayCommand(
+                () => Previous(),
+                () => true
+            );
+
             Context = new PeopleHackTheFutureEntities();
             var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
             Lijst = new ObservableCollection<People>(data);
@@ -68,6 +73,16 @@ namespace HackTheFuture.ViewModel
             i++;
             var data = Context.People.OrderBy(p => p.Id).Skip(i * width).Take(width);
             Lijst = new ObservableCollection<People>(data);
+        }
+
+        public void Previous()
+        {
+            if (i > 0)
+            {
+                i--;
+                var data = Context.People.OrderBy(p => p.Id).Skip(i*width).Take(width);
+                Lijst = new ObservableCollection<People>(data);
+            }
         }
     }
 }
