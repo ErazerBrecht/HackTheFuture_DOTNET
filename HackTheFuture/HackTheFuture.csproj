@@ -98,6 +98,7 @@
     <Compile Include="Model\Geschiedkundige.cs" />
     <Compile Include="Model\Ingenieur.cs" />
     <Compile Include="Model\Kaartenmaker.cs" />
+    <Compile Include="Model\NewPeopleExtension.cs" />
     <Compile Include="Model\Opvoeder.cs" />
     <Compile Include="Model\Ordehandhaver.cs" />
     <Compile Include="Model\Politieker.cs" />
