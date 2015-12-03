@@ -6,7 +6,26 @@ using System.Threading.Tasks;
 
 namespace HackTheFuture.Model
 {
-    class AfvalVerwerker
+    class AfvalVerwerker : Arbeid
     {
+        public AfvalVerwerker()
+        {
+            Naam = "Geoloog";
+
+            MinStrength =     2;
+            MaxStrength =     3;
+            MinPerception =   2;
+            MaxPerception =   3;
+            MinEndurance =    2;
+            MaxEndurance =    2;
+            MinCharisma =     0;
+            MaxCharisma =     1;
+            MinIntelligence = 3;
+            MaxIntelligence = 4;
+            MinAgility =      2;
+            MaxAgility =      3;
+            MinLuck =         3;
+            MaxLuck =         4;
+        }
     }
 }

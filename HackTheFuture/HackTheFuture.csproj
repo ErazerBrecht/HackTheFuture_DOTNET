@@ -89,8 +89,20 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>PeopleModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\AfvalVerwerker.cs" />
+    <Compile Include="Model\Dokter.cs" />
+    <Compile Include="Model\Elektrischingenieur.cs" />
+    <Compile Include="Model\Energie.cs" />
+    <Compile Include="Model\GeheimAgent.cs" />
+    <Compile Include="Model\Geoloog.cs" />
+    <Compile Include="Model\Geschiedkundige.cs" />
     <Compile Include="Model\Ingenieur.cs" />
     <Compile Include="Model\Kaartenmaker.cs" />
+    <Compile Include="Model\Opvoeder.cs" />
+    <Compile Include="Model\Ordehandhaver.cs" />
+    <Compile Include="Model\Politieker.cs" />
+    <Compile Include="Model\Verzorger.cs" />
+    <Compile Include="Model\VoedingsDeskundige.cs" />
     <Compile Include="NewPeople.cs">
       <DependentUpon>PeopleModel.tt</DependentUpon>
     </Compile>
