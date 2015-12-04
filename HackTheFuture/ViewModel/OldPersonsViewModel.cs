@@ -122,11 +122,11 @@ namespace HackTheFuture.ViewModel
         {
             //@ The moment we hardcoded the lenghth of the DB to 1 000 000
             //TODO FIX THIS!!!
-            //1 000 000 / 200 = 5000
+            //1 000 000 / 1000 = 1000
 
-            for (int l = 0; l < 5000; l++)
+            for (int l = 0; l < 1000; l++)
             {
-                _people = Context.People.OrderBy(p => p.Id).Skip(l * widthCalc).Take(widthCalc).ToList();
+                _people = Context.People.Take(widthCalc).ToList();
                 _newPeoples = new List<NewPeople>();
 
                 foreach (var p in _people)
@@ -205,6 +205,10 @@ namespace HackTheFuture.ViewModel
 
                 //Save to DB
                 Context.SaveChanges();
+
+                i = 0;
+                var data = Context.People.Take(widthShow);
+                Lijst = new ObservableCollection<People>(data);
 
             }
         }
