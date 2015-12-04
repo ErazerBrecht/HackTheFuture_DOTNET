@@ -10,7 +10,7 @@ namespace HackTheFuture.Model
     {
         public Ordehandhaver()
         {
-            Naam = "ordehandhaver";
+            Naam = "Ordehandhaver";
 
             MinStrength = 3;
             MaxStrength = 4;

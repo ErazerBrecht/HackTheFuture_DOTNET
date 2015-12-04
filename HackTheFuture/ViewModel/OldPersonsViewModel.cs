@@ -17,7 +17,7 @@ namespace HackTheFuture.ViewModel
     {
         private int i = 0;
         private int widthShow = 25;
-        private int widthCalc = 200;
+        private int widthCalc = 500;
         private Task _asyncTask;
 
         public string Header { get; set; }
@@ -44,20 +44,17 @@ namespace HackTheFuture.ViewModel
 
         private List<People> _people = new List<People>();
         private List<NewPeople> _newPeoples = new List<NewPeople>();
-        private List<People> _peopleLove = new List<People>();
-        private List<Arbeid> _arbeiden = new List<Arbeid>();
+        private readonly List<Arbeid> _arbeiden = new List<Arbeid>();
 
         public ICommand NextButton { get; set; }
         public ICommand PreviousButton { get; set; }
         public ICommand SearchJobButton { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the MainViewModel class.
-        /// </summary>
         public OldPersonsViewModel()
         {
             Header = "Old Persons";
 
+            #region Buttons
             NextButton = new RelayCommand(
                 () => Next(),
                 () => true
@@ -72,6 +69,7 @@ namespace HackTheFuture.ViewModel
                 () => SearchJob(),
                 () => true
                 );
+            #endregion
 
             _asyncTask = new Task(SearchJobAsync);
             _arbeiden.Add(new Ingenieur());
@@ -130,6 +128,7 @@ namespace HackTheFuture.ViewModel
             {
                 _people = Context.People.OrderBy(p => p.Id).Skip(l * widthCalc).Take(widthCalc).ToList();
                 _newPeoples = new List<NewPeople>();
+
                 foreach (var p in _people)
                 {
                     var newP = new NewPeople();
@@ -144,24 +143,21 @@ namespace HackTheFuture.ViewModel
                             break;
                         }
                     }
+
                     _newPeoples.Add(newP);
                 }
 
-                //TODO Add new people to db
-                //TODO Remove old peoplpe
-
                 Context.People.RemoveRange(_people);
                 Context.NewPeople.AddRange(_newPeoples);
-                Context.SaveChanges();
 
-                foreach (var newP in _newPeoples)
+                foreach (var newP in Context.NewPeople)
                 {
 
                     //Check if person has a partner
                     //If not find one
-
                     if (newP.Partner == null)
-                        foreach (var m in _people)
+                    {
+                        foreach (var m in _newPeoples)
                         {
                             if (m.Sex != newP.Sex)
                             {
@@ -169,22 +165,29 @@ namespace HackTheFuture.ViewModel
                                 {
                                     if (m.LastName != newP.LastName)
                                     {
-                                        if (Math.Abs(m.Strength - newP.Strength) >= 1 && Math.Abs(m.Strength - newP.Strength) <= 3)
+                                        if (Math.Abs(m.Strength - newP.Strength) >= 1 &&
+                                            Math.Abs(m.Strength - newP.Strength) <= 3)
                                         {
-                                            if (Math.Abs(m.Perception - newP.Perception) >= 1 && Math.Abs(m.Perception - newP.Perception) <= 3)
+                                            if (Math.Abs(m.Perception - newP.Perception) >= 1 &&
+                                                Math.Abs(m.Perception - newP.Perception) <= 3)
                                             {
-                                                if (Math.Abs(m.Endurance - newP.Endurance) >= 1 && Math.Abs(m.Endurance - newP.Endurance) <= 3)
+                                                if (Math.Abs(m.Endurance - newP.Endurance) >= 1 &&
+                                                    Math.Abs(m.Endurance - newP.Endurance) <= 3)
                                                 {
-                                                    if (Math.Abs(m.Charisma - newP.Charisma) >= 1 && Math.Abs(m.Charisma - newP.Charisma) <= 3)
+                                                    if (Math.Abs(m.Charisma - newP.Charisma) >= 1 &&
+                                                        Math.Abs(m.Charisma - newP.Charisma) <= 3)
                                                     {
-                                                        if (Math.Abs(m.Intelligence - newP.Intelligence) >= 1 && Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
+                                                        if (Math.Abs(m.Intelligence - newP.Intelligence) >= 1 &&
+                                                            Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
                                                         {
-                                                            if (Math.Abs(m.Agility - newP.Agility) >= 1 && Math.Abs(m.Agility - newP.Agility) <= 3)
+                                                            if (Math.Abs(m.Agility - newP.Agility) >= 1 &&
+                                                                Math.Abs(m.Agility - newP.Agility) <= 3)
                                                             {
-                                                                if (Math.Abs(m.Luck - newP.Luck) >= 1 && Math.Abs(m.Luck - newP.Luck) <= 3)
+                                                                if (Math.Abs(m.Luck - newP.Luck) >= 1 &&
+                                                                    Math.Abs(m.Luck - newP.Luck) <= 3)
                                                                 {
                                                                     newP.Partner = m.Id;
-                                                                    Debug.WriteLine(newP.FirstName + " has a relation with " + m.FirstName);
+                                                                    Debug.WriteLine(newP.FirstName +" has a relation with " + m.FirstName);
                                                                     break;
                                                                 }
                                                             }
@@ -192,17 +195,18 @@ namespace HackTheFuture.ViewModel
                                                     }
                                                 }
                                             }
-
                                         }
                                     }
                                 }
                             }
                         }
+                    }
                 }
 
+                //Save to DB
                 Context.SaveChanges();
+
             }
         }
-
     }
 }
