@@ -10,7 +10,7 @@ namespace HackTheFuture.Model
     {
         public AfvalVerwerker()
         {
-            Naam = "Afvel verwerker";
+            Naam = "Afval verwerker";
 
             MinStrength =     2;
             MaxStrength =     3;
