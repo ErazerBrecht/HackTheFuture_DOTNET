@@ -136,12 +136,8 @@ namespace HackTheFuture.ViewModel
 
                     foreach (var a in _arbeiden)
                     {
-                        if (a.Check(p))
-                        {
-                            Debug.WriteLine(p.FirstName + " is een " + a.Naam);
-                            newP.Job = a.Naam;
+                        if (a.Check(newP))
                             break;
-                        }
                     }
 
                     _newPeoples.Add(newP);
@@ -150,55 +146,20 @@ namespace HackTheFuture.ViewModel
                 Context.People.RemoveRange(_people);
                 Context.NewPeople.AddRange(_newPeoples);
 
+                //Why not in foreach above?
+                //Otherwise EF will crash!
+                //Because it needs to add foreign key to object that don't exist yet
+                //By doing this, we're sure the object already exists!
                 foreach (var newP in Context.NewPeople)
                 {
-
                     //Check if person has a partner
                     //If not find one
                     if (newP.Partner == null)
                     {
                         foreach (var m in _newPeoples)
                         {
-                            if (m.Sex != newP.Sex)
-                            {
-                                if (Math.Abs((m.DateOfBirth - newP.DateOfBirth).TotalDays) <= 6 * 365)
-                                {
-                                    if (m.LastName != newP.LastName)
-                                    {
-                                        if (Math.Abs(m.Strength - newP.Strength) >= 1 &&
-                                            Math.Abs(m.Strength - newP.Strength) <= 3)
-                                        {
-                                            if (Math.Abs(m.Perception - newP.Perception) >= 1 &&
-                                                Math.Abs(m.Perception - newP.Perception) <= 3)
-                                            {
-                                                if (Math.Abs(m.Endurance - newP.Endurance) >= 1 &&
-                                                    Math.Abs(m.Endurance - newP.Endurance) <= 3)
-                                                {
-                                                    if (Math.Abs(m.Charisma - newP.Charisma) >= 1 &&
-                                                        Math.Abs(m.Charisma - newP.Charisma) <= 3)
-                                                    {
-                                                        if (Math.Abs(m.Intelligence - newP.Intelligence) >= 1 &&
-                                                            Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
-                                                        {
-                                                            if (Math.Abs(m.Agility - newP.Agility) >= 1 &&
-                                                                Math.Abs(m.Agility - newP.Agility) <= 3)
-                                                            {
-                                                                if (Math.Abs(m.Luck - newP.Luck) >= 1 &&
-                                                                    Math.Abs(m.Luck - newP.Luck) <= 3)
-                                                                {
-                                                                    newP.Partner = m.Id;
-                                                                    Debug.WriteLine(newP.FirstName +" has a relation with " + m.FirstName);
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            if (CalculatePartner(m, newP))
+                                break;
                         }
                     }
                 }
@@ -211,6 +172,52 @@ namespace HackTheFuture.ViewModel
                 Lijst = new ObservableCollection<People>(data);
 
             }
+        }
+        private bool CalculatePartner(NewPeople m, NewPeople newP)
+        {
+            if (m.Sex != newP.Sex)
+            {
+                if (Math.Abs((m.DateOfBirth - newP.DateOfBirth).TotalDays) <= 6*365)
+                {
+                    if (m.LastName != newP.LastName)
+                    {
+                        if (Math.Abs(m.Strength - newP.Strength) >= 1 &&
+                            Math.Abs(m.Strength - newP.Strength) <= 3)
+                        {
+                            if (Math.Abs(m.Perception - newP.Perception) >= 1 &&
+                                Math.Abs(m.Perception - newP.Perception) <= 3)
+                            {
+                                if (Math.Abs(m.Endurance - newP.Endurance) >= 1 &&
+                                    Math.Abs(m.Endurance - newP.Endurance) <= 3)
+                                {
+                                    if (Math.Abs(m.Charisma - newP.Charisma) >= 1 &&
+                                        Math.Abs(m.Charisma - newP.Charisma) <= 3)
+                                    {
+                                        if (Math.Abs(m.Intelligence - newP.Intelligence) >= 1 &&
+                                            Math.Abs(m.Intelligence - newP.Intelligence) <= 3)
+                                        {
+                                            if (Math.Abs(m.Agility - newP.Agility) >= 1 &&
+                                                Math.Abs(m.Agility - newP.Agility) <= 3)
+                                            {
+                                                if (Math.Abs(m.Luck - newP.Luck) >= 1 &&
+                                                    Math.Abs(m.Luck - newP.Luck) <= 3)
+                                                {
+                                                    newP.Partner = m.Id;
+                                                    m.Partner = newP.Id;
+                                                    Debug.WriteLine(newP.FirstName + " " + newP.LastName + " has a relation with " + m.FirstName + " " + m.LastName);
+                                                    return true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

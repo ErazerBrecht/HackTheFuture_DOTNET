@@ -26,11 +26,6 @@ namespace HackTheFuture.Model
             MaxAgility = 2;
             MinLuck = 1;
             MaxLuck = 4;
-    }
-
-        public override bool Check(People p)
-        {
-            return base.Check(p);
         }
     }
 }

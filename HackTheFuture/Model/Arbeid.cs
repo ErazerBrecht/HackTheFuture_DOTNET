@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace HackTheFuture.Model
 
         public string Naam { get; set; }
 
-        public virtual bool Check(People p)
+        public virtual bool Check(NewPeople p)
         {
             if (p.Strength >= MinStrength && p.Strength <= MaxStrength)
             {
@@ -41,6 +42,8 @@ namespace HackTheFuture.Model
                                 {
                                     if (p.Luck >= MinLuck && p.Luck <= MaxLuck)
                                     {
+                                        p.Job = Naam;
+                                        Debug.WriteLine(p.FirstName + " is een " + Naam);
                                         return true;
                                     }
                                 }
