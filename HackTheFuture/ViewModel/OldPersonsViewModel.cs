@@ -16,10 +16,10 @@ namespace HackTheFuture.ViewModel
 {
     class OldPersonsViewModel : ViewModelBase, IWorkSpace
     {
-        private int i = 0;
+        private int _i = 0;
         private double count = 0.0;
-        private int widthShow = 25;
-        private int widthCalc = 2000;
+        private const int WidthShow = 25;
+        private const int WidthCalc = 2000;
         private Task _asyncTask;
 
         public string Header { get; set; }
@@ -92,26 +92,26 @@ namespace HackTheFuture.ViewModel
 
             Context = new PeopleHackTheFutureEntities();
             count = Context.People.Count();
-            var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
+            var data = Context.People.OrderBy(p => p.Id).Skip(_i * WidthShow).Take(WidthShow);
             Lijst = new ObservableCollection<People>(data);
         }
 
         public void Next()
         {
-            if (i < Math.Ceiling(count / widthShow))
+            if (_i < Math.Ceiling(count / WidthShow))
             {
-                i++;
-                var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
+                _i++;
+                var data = Context.People.OrderBy(p => p.Id).Skip(_i * WidthShow).Take(WidthShow);
                 Lijst = new ObservableCollection<People>(data); 
             }
         }
 
         public void Previous()
         {
-            if (i > 0)
+            if (_i > 0)
             {
-                i--;
-                var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
+                _i--;
+                var data = Context.People.OrderBy(p => p.Id).Skip(_i * WidthShow).Take(WidthShow);
                 Lijst = new ObservableCollection<People>(data);
             }
         }
@@ -128,10 +128,10 @@ namespace HackTheFuture.ViewModel
         {
             Context.Configuration.AutoDetectChangesEnabled = false;
 
-            int max = Convert.ToInt32(Math.Ceiling(count/widthCalc));
+            int max = Convert.ToInt32(Math.Ceiling(count/WidthCalc));
             for (int l = 0; l < max; l++)
             {
-                _people = Context.People.Take(widthCalc).ToList();
+                _people = Context.People.Take(WidthCalc).ToList();
                 _newPeoples = new List<NewPeople>();
 
                 foreach (var p in _people)
@@ -170,8 +170,8 @@ namespace HackTheFuture.ViewModel
                 //Save to DB
                 Context.SaveChanges();
 
-                i = 0;
-                var data = Context.People.Take(widthShow);
+                _i = 0;
+                var data = Context.People.Take(WidthShow);
                 Lijst = new ObservableCollection<People>(data);
 
             }
