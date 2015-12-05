@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using HackTheFuture.Model;
 using EntityFramework.BulkInsert.Extensions;
+using EntityFramework.Extensions;
 
 namespace HackTheFuture.ViewModel
 {
@@ -126,8 +127,9 @@ namespace HackTheFuture.ViewModel
 
         async void SearchJobAsync()
         {
-            Context.Configuration.AutoDetectChangesEnabled = false;
+            //Context.Configuration.AutoDetectChangesEnabled = false;
 
+            //Calculate how many times we have to execute our for loop
             int max = Convert.ToInt32(Math.Ceiling(count/WidthCalc));
             for (int l = 0; l < max; l++)
             {
@@ -164,18 +166,21 @@ namespace HackTheFuture.ViewModel
                     }
                 }
 
-                Context.People.RemoveRange(_people);
+                //Context.People.RemoveRange(_people);
+                Context.People.Take(WidthCalc).Delete();
+                //Context.NewPeople.AddRange(_newPeoples);
                 Context.BulkInsert(_newPeoples);
 
                 //Save to DB
                 Context.SaveChanges();
 
+                //Update DataGrid
                 _i = 0;
                 var data = Context.People.Take(WidthShow);
                 Lijst = new ObservableCollection<People>(data);
-
             }
         }
+
         private bool CalculatePartner(NewPeople m, NewPeople newP)
         {
             if (m.Partner == null)
