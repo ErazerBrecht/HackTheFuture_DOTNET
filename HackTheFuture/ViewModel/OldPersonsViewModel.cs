@@ -6,8 +6,8 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using HackTheFuture.Model;
 using EntityFramework.BulkInsert.Extensions;
@@ -20,8 +20,10 @@ namespace HackTheFuture.ViewModel
         private int _i = 0;
         private double count = 0.0;
         private const int WidthShow = 25;
-        private const int WidthCalc = 2000;
+        private const int WidthCalc = 5000;
+
         private Task _asyncTask;
+        private Task _asyncInnerTask;
 
         public string Header { get; set; }
 
@@ -57,6 +59,8 @@ namespace HackTheFuture.ViewModel
         {
             Header = "Old Persons";
 
+            Application.Current.MainWindow.Closing += MainWindow_Closing;
+
             #region Buttons
             NextButton = new RelayCommand(
                 () => Next(),
@@ -75,6 +79,7 @@ namespace HackTheFuture.ViewModel
             #endregion
 
             _asyncTask = new Task(SearchJobAsync);
+
             _arbeiden.Add(new Ingenieur());
             _arbeiden.Add(new Ordehandhaver());
             _arbeiden.Add(new Elektrisch_ingenieur());
@@ -117,6 +122,12 @@ namespace HackTheFuture.ViewModel
             }
         }
 
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //TODO Show wait screen
+            Task.WaitAny(_asyncInnerTask);    
+        }
+
         public void SearchJob()
         {
             if (_asyncTask.Status != TaskStatus.Running)
@@ -127,58 +138,63 @@ namespace HackTheFuture.ViewModel
 
         async void SearchJobAsync()
         {
-            //Context.Configuration.AutoDetectChangesEnabled = false;
-
             //Calculate how many times we have to execute our for loop
             int max = Convert.ToInt32(Math.Ceiling(count/WidthCalc));
             for (int l = 0; l < max; l++)
             {
-                _people = Context.People.Take(WidthCalc).ToList();
-                _newPeoples = new List<NewPeople>();
+                _asyncInnerTask = new Task(CalculatePeople);
+                 _asyncInnerTask.Start();
+                Task.WaitAny(_asyncInnerTask);
+            }
+        }
 
-                foreach (var p in _people)
+        async void CalculatePeople()
+        {
+            _people = Context.People.Take(WidthCalc).ToList();
+            _newPeoples = new List<NewPeople>();
+
+            foreach (var p in _people)
+            {
+                var add = new NewPeople();
+                add.Create(p);
+                _newPeoples.Add(add);
+            }
+
+            for (int j = 0; j < _newPeoples.Count; j++)
+            {
+                var newP = _newPeoples.ElementAt(j);
+
+                foreach (var a in _arbeiden)
                 {
-                    var add = new NewPeople();
-                    add.Create(p);
-                    _newPeoples.Add(add);
+                    if (a.Check(newP))
+                        break;
                 }
 
-                for(int j = 0; j < _newPeoples.Count; j++)
+                //Check if person has a partner
+                //If not find one
+                if (newP.Partner == null)
                 {
-                    var newP = _newPeoples.ElementAt(j);
-
-                    foreach (var a in _arbeiden)
+                    for (int k = j + 1; k < _newPeoples.Count; k++)
                     {
-                        if (a.Check(newP))
+                        var m = _newPeoples.ElementAt(k);
+                        if (CalculatePartner(m, newP))
                             break;
                     }
-
-                    //Check if person has a partner
-                    //If not find one
-                    if (newP.Partner == null)
-                    {
-                        for (int k = j + 1; k < _newPeoples.Count; k++)
-                        {
-                            var m = _newPeoples.ElementAt(k);
-                            if (CalculatePartner(m, newP))
-                                break;
-                        }
-                    }
                 }
-
-                //Context.People.RemoveRange(_people);
-                Context.People.Take(WidthCalc).Delete();
-                //Context.NewPeople.AddRange(_newPeoples);
-                Context.BulkInsert(_newPeoples);
-
-                //Save to DB
-                Context.SaveChanges();
-
-                //Update DataGrid
-                _i = 0;
-                var data = Context.People.Take(WidthShow);
-                Lijst = new ObservableCollection<People>(data);
             }
+
+            //Context.People.RemoveRange(_people);
+            Context.People.Take(WidthCalc).Delete();
+            //Context.NewPeople.AddRange(_newPeoples);
+            Context.BulkInsert(_newPeoples);
+
+            //Save to DB
+            Context.SaveChanges();
+
+            //Update DataGrid
+            _i = 0;
+            var data = Context.People.Take(WidthShow);
+            Lijst = new ObservableCollection<People>(data);
         }
 
         private bool CalculatePartner(NewPeople m, NewPeople newP)
