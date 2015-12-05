@@ -17,6 +17,7 @@ namespace HackTheFuture.ViewModel
     class OldPersonsViewModel : ViewModelBase, IWorkSpace
     {
         private int i = 0;
+        private double count = 0.0;
         private int widthShow = 25;
         private int widthCalc = 2000;
         private Task _asyncTask;
@@ -90,15 +91,19 @@ namespace HackTheFuture.ViewModel
 
 
             Context = new PeopleHackTheFutureEntities();
+            count = Context.People.Count();
             var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
             Lijst = new ObservableCollection<People>(data);
         }
 
         public void Next()
         {
-            i++;
-            var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
-            Lijst = new ObservableCollection<People>(data);
+            if (i < Math.Ceiling(count / widthShow))
+            {
+                i++;
+                var data = Context.People.OrderBy(p => p.Id).Skip(i * widthShow).Take(widthShow);
+                Lijst = new ObservableCollection<People>(data); 
+            }
         }
 
         public void Previous()
@@ -123,11 +128,8 @@ namespace HackTheFuture.ViewModel
         {
             Context.Configuration.AutoDetectChangesEnabled = false;
 
-            //@ The moment we hardcoded the lenghth of the DB to 1 000 000
-            //TODO FIX THIS!!!
-            //1 000 000 / 2000 = 500
-
-            for (int l = 0; l < 500; l++)
+            int max = Convert.ToInt32(Math.Ceiling(count/widthCalc));
+            for (int l = 0; l < max; l++)
             {
                 _people = Context.People.Take(widthCalc).ToList();
                 _newPeoples = new List<NewPeople>();
